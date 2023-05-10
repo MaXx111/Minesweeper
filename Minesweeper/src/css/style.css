@@ -1,10 +1,11 @@
 body {
-    background-color: aqua;
+    margin: 0;
 }
 
 
 .conteiner {
     display: flex;
+    background-color: beige;
 }
 .conteiner__wrapper {
     margin: 0 auto;
@@ -15,17 +16,16 @@ body {
     margin-right: auto;
   }
   
-#table TR TD{
-    border:1px solid white;
-    background: #999999;
-    width: 16px;
-    height: 16px;
+.cell{
+    border:1px solid rgb(255, 208, 0);
+    background: #e2aa32;
+    width: 20px;
+    height: 20px;
     text-align: center;
   }
-  
-#table TR TD.clicked {
-      background: #333333;
-  }
+  .active {
+    background-color: #333333;
+}
   
 #table TR TD.mine {
       background: #FF0000;
