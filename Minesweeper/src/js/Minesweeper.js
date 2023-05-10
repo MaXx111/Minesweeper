@@ -10,6 +10,7 @@ export default class Minesweeper {
         this.printItems = this.printItems.bind(this);
         this.onCellClick = this.onCellClick.bind(this);
         this.addMines = this.addMines.bind(this);
+        this.cellClick = this.cellClick.bind(this);
     }
 
     init() {
@@ -59,15 +60,41 @@ export default class Minesweeper {
 
         let cellTarget = e.target;
 
-        // if(cellTarget.)
+        this.cellClick(cellTarget);
+    }
 
-        if (cellTarget.dataset.mine == 'true') {
+    cellClick(cell) {
+        if (cell.dataset.mine == 'true') {
             alert(`Game over`);
             return
         }
 
-        console.log(cellTarget)
-        cellTarget.classList.add('active');
+        console.log(cell)
+        cell.classList.add('active');
+
+        let mineCount = 0;
+        let cellRow = cell.parentNode.rowIndex;
+        let cellCol = cell.cellIndex;
+            //alert(cellRow + " " + cellCol);
+        for (let i = Math.max(cellRow-1,0); i <= Math.min(cellRow+1,9); i++) {
+            for(let j = Math.max(cellCol-1,0); j <= Math.min(cellCol+1,9); j++) {
+                if (this.table.rows[i].cells[j].getAttribute("data-mine")=="true") mineCount++;
+            }
+        }
+
+        cell.innerHTML=mineCount;
+
+        if (mineCount == 0) { 
+        //Reveal all adjacent cells as they do not have a mine
+            for (let i = Math.max(cellRow-1,0); i <= Math.min(cellRow+1,9); i++) {
+                for(let j = Math.max(cellCol-1,0); j <= Math.min(cellCol+1,9); j++) {
+                //Recursive Call
+                    if (this.table.rows[i].cells[j].innerHTML == "") this.cellClick(this.table.rows[i].cells[j]);
+                }
+            }
+        }
+
+    // checkLevelCompletion();
     }
 
 }

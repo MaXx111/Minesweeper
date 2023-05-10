@@ -23,8 +23,8 @@ body {
     height: 20px;
     text-align: center;
   }
-  .active {
-    background-color: #333333;
+.active {
+    background-color: #fff9a1;
 }
   
 #table TR TD.mine {
