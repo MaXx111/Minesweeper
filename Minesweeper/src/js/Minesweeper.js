@@ -14,6 +14,7 @@ export default class Minesweeper {
         this.cellClick = this.cellClick.bind(this);
         this.checkLevelCompletion = this.checkLevelCompletion.bind(this);
         this.showMines = this.showMines.bind(this);
+        this.stopGame = this.stopGame.bind(this)
     }
 
     init() {
@@ -65,6 +66,7 @@ export default class Minesweeper {
     cellClick(cell) {
         if (cell.dataset.mine == 'true') {
             alert(`Game over`);
+            this.stopGame();
             this.showMines();
 
             return
@@ -110,12 +112,15 @@ export default class Minesweeper {
             for(let j=0; j<10; j++) {
               if (
                   (this.table.rows[i].cells[j].getAttribute("data-mine")=="false") && (this.table.rows[i].cells[j].textContent=="")
-                  ) levelComplete=false;
+                  )  {
+                      levelComplete = false;
+                  }
             }
         }
         if (levelComplete) {
           alert("You Win!");
           this.showMines();
+          this.stopGame();
         }
       }
 
@@ -128,6 +133,10 @@ export default class Minesweeper {
             if (cell.getAttribute("data-mine")=="true") cell.className="mine";
           }
         }
+    }
+
+    stopGame() {
+        this.table.removeEventListener('click', this.onCellClick)
     }
 
 }
