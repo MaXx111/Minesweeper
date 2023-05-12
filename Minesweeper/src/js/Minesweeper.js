@@ -11,18 +11,17 @@ export default class Minesweeper {
         this.onCellClick = this.onCellClick.bind(this);
         this.addMines = this.addMines.bind(this);
         this.cellClick = this.cellClick.bind(this);
+        this.checkLevelCompletion = this.checkLevelCompletion.bind(this);
+        this.revealMines = this.revealMines.bind(this);
     }
 
     init() {
-
         this.printItems();
     }
 
     printItems() {
         this.body.appendChild(this.htmlCode.conteiterHTML())
-
         this.table = document.getElementById('table');
-
         this.table.addEventListener('click', this.onCellClick)
 
         this.printCells()
@@ -35,6 +34,7 @@ export default class Minesweeper {
             for (var j=0; j<10; j++) {
                 let cell = row.insertCell(j);
                 cell.className = 'cell';
+
                 let mine = document.createAttribute("data-mine");       
                 mine.value = "false";             
                 cell.setAttributeNode(mine);
@@ -49,8 +49,8 @@ export default class Minesweeper {
             let row = Math.floor(Math.random() * 10);
             let col = Math.floor(Math.random() * 10);
             let cell = this.table.rows[row].cells[col];
-            cell.setAttribute("data-mine","true");
-            cell.innerHTML="X";
+            cell.setAttribute("data-mine", "true");
+            cell.textContent = "X";
           }
     }
 
@@ -66,35 +66,64 @@ export default class Minesweeper {
     cellClick(cell) {
         if (cell.dataset.mine == 'true') {
             alert(`Game over`);
+            this.showMines();
+
             return
         }
 
-        console.log(cell)
         cell.classList.add('active');
 
         let mineCount = 0;
         let cellRow = cell.parentNode.rowIndex;
         let cellCol = cell.cellIndex;
-            //alert(cellRow + " " + cellCol);
+    
         for (let i = Math.max(cellRow-1,0); i <= Math.min(cellRow+1,9); i++) {
+
             for(let j = Math.max(cellCol-1,0); j <= Math.min(cellCol+1,9); j++) {
                 if (this.table.rows[i].cells[j].getAttribute("data-mine")=="true") mineCount++;
             }
         }
 
-        cell.innerHTML=mineCount;
+        cell.textContent = mineCount;
 
         if (mineCount == 0) { 
-        //Reveal all adjacent cells as they do not have a mine
             for (let i = Math.max(cellRow-1,0); i <= Math.min(cellRow+1,9); i++) {
+
                 for(let j = Math.max(cellCol-1,0); j <= Math.min(cellCol+1,9); j++) {
-                //Recursive Call
-                    if (this.table.rows[i].cells[j].innerHTML == "") this.cellClick(this.table.rows[i].cells[j]);
+                    if (this.table.rows[i].cells[j].textContent == "") this.cellClick(this.table.rows[i].cells[j]);
                 }
             }
         }
 
-    // checkLevelCompletion();
+     this.checkLevelCompletion();
+    }
+
+    checkLevelCompletion() {
+        let levelComplete = true;
+
+          for (let i=0; i<10; i++) {
+
+            for(let j=0; j<10; j++) {
+              if (
+                  (this.table.rows[i].cells[j].getAttribute("data-mine")=="false") && (this.table.rows[i].cells[j].textContent=="")
+                  ) levelComplete=false;
+            }
+        }
+        if (levelComplete) {
+          alert("You Win!");
+          this.revealMines();
+        }
+      }
+
+      revealMines() {
+        for (let i=0; i<10; i++) {
+
+          for(let j=0; j<10; j++) {
+              
+            let cell = this.table.rows[i].cells[j];
+            if (cell.getAttribute("data-mine")=="true") cell.className="mine";
+          }
+        }
     }
 
 }
