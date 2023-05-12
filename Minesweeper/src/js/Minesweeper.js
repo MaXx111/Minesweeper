@@ -4,6 +4,7 @@ export default class Minesweeper {
     constructor(body) {
         this.body = body;
         this.table = false;
+        this.firstClick = true;
 
         this.htmlCode = new HTMLCode();
 
@@ -40,8 +41,6 @@ export default class Minesweeper {
                 cell.setAttributeNode(mine);
             }
         }
-
-        this.addMines();
     }
 
     addMines() {
@@ -69,6 +68,11 @@ export default class Minesweeper {
             this.showMines();
 
             return
+        }
+
+        if(this.firstClick) {
+            this.addMines();
+            this.firstClick = false;
         }
 
         cell.classList.add('active');
