@@ -14,8 +14,13 @@ export default class Minesweeper {
         this.loseTxt = false;
         this.winTxt = false;
         this.clickTxt = false;
+        
 
         this.htmlCode = new HTMLCode();
+
+        this.localSec = 0;
+        this.localClick = 0;
+        this.interval = 0;
 
         this.printItems = this.printItems.bind(this);
         this.onCellClick = this.onCellClick.bind(this);
@@ -25,19 +30,26 @@ export default class Minesweeper {
         this.showMines = this.showMines.bind(this);
         this.stopGame = this.stopGame.bind(this)
         this.onResetBtn = this.onResetBtn.bind(this);
+
+        this.tick = this.tick.bind(this);
+        this.clearInterval = this.clearInterval.bind(this);
     }
 
     init() {
         this.printItems();
         let storage = JSON.parse(localStorage.getItem('statistic'));
 
-        console.log(storage);
+        this.interval = setInterval(this.tick, 1000);
 
         if(storage) {
             this.storage = storage;
         } else {
             localStorage.setItem('statistic', JSON.stringify(this.storage));
         }
+    }
+
+    tick() {
+        this.localSec++;
     }
 
     printItems() {
@@ -53,9 +65,16 @@ export default class Minesweeper {
         this.printCells()
     }
 
+    clearInterval() {
+        clearInterval(this.interval)
+        this.localSec = 0;
+        this.localClick = 0;
+        this.interval = setInterval(this.tick, 1000);
+    }
+
     onResetBtn(e) {
         e.preventDefault();
-        console.log(`reset`);
+        this.clearInterval();
 
         this.table.removeEventListener('click', this.onCellClick)
 
@@ -82,7 +101,7 @@ export default class Minesweeper {
     }
 
     addMines() {
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 10; i++) {
             let row = Math.floor(Math.random() * 10);
             let col = Math.floor(Math.random() * 10);
             let cell = this.table.rows[row].cells[col];
@@ -100,13 +119,14 @@ export default class Minesweeper {
         this.cellClick(cellTarget);
         this.storage.click++;
         this.clickTxt.textContent = this.storage.click;
+        this.localClick++;
 
         localStorage.setItem('statistic', JSON.stringify(this.storage));
     }
 
     cellClick(cell) {
         if (cell.dataset.mine == 'true') {
-            alert(`Game over`);
+            alert(`Game over. Try again`);
             this.stopGame('lose');
             this.showMines();
 
@@ -159,7 +179,7 @@ export default class Minesweeper {
             }
         }
         if (levelComplete) {
-          alert("You Win!");
+          alert(`Hooray! You found all mines in ${this.localSec} seconds and ${this.localClick} moves!`);
           this.showMines();
           this.stopGame(`win`);
         }
