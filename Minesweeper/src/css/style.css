@@ -2,7 +2,6 @@ body {
     margin: 0;
 }
 
-
 .conteiner {
     display: flex;
     background-color: beige;
@@ -11,22 +10,102 @@ body {
     margin: 0 auto;
 }
 
+.container__title {
+    font-size: 64px;
+    text-align: center;
+}
+
+.main-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 0 25px 0;
+}
+
+.table {
+    padding: 0 50px 0 0;
+}
+
+.reset-btn {
+    display: block;
+    margin: 25px auto;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: rgb(240, 204, 149);
+    border: 1px solid beige;
+    font-size: 34px;
+}
+
+.reset-btn:hover {
+    background-color: rgb(253, 204, 130);
+}
+
+.reset-btn:active {
+    background-color: rgb(240, 204, 149);
+}
+
 #grid {
     margin-left: auto;
     margin-right: auto;
   }
   
 .cell{
-    border:1px solid rgb(255, 208, 0);
+    border: 1px solid rgb(255, 208, 0);
     background: #e2aa32;
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 40px;
     text-align: center;
-  }
+    border-radius: 5px;
+}
+
 .active {
     background-color: #fff9a1;
+}
+
+.orange{
+    color: orange;
+}
+
+.red {
+    color: red;
+}
+
+.aqua {
+    color:aqua;
+}
+
+.green {
+    color: green;
 }
   
 #table TR TD.mine {
       background: #FF0000;
-  }
+}
+
+@media (max-width:740px) {
+    .cell {
+        width: 20px;
+        height: 20px;
+    }
+
+    .reset-btn {
+        font-size: 18px;
+    }
+}
+
+@media (max-width:560px) {
+
+    .container__title {
+        font-size: 50px;
+    }
+    .main-info {
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+    }
+
+    .table {
+        padding: 0;
+    }
+}

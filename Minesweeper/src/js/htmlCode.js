@@ -21,7 +21,7 @@ export default class HTMLCode {
 
         const resetBtn = document.createElement('button');
         resetBtn.className = "reset-btn";
-        resetBtn.textContent = 'reset';
+        resetBtn.textContent = 'New game';
 
         const info = document.createElement('div');
         info.className = 'main-info';

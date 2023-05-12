@@ -106,8 +106,7 @@ export default class Minesweeper {
             let col = Math.floor(Math.random() * 10);
             let cell = this.table.rows[row].cells[col];
             cell.setAttribute("data-mine", "true");
-            cell.textContent = "X";
-          }
+        }
     }
 
     onCellClick(e) {
@@ -151,6 +150,25 @@ export default class Minesweeper {
             }
         }
 
+        if(mineCount == 1) {
+            cell.classList.add('green');
+
+        }
+
+        if(mineCount == 2) {
+            cell.classList.add('aqua');
+            
+        }
+
+        if(mineCount == 3) {
+            cell.classList.add('orange');
+            
+        }
+
+        if(mineCount == 4) {
+            cell.classList.add('red');
+            
+        }
         cell.textContent = mineCount;
 
         if (mineCount == 0) { 
