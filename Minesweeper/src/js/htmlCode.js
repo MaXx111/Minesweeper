@@ -23,10 +23,14 @@ export default class HTMLCode {
         resetBtn.className = "reset-btn";
         resetBtn.textContent = 'reset';
 
+        const info = document.createElement('div');
+        info.className = 'main-info';
+
         wrapper.appendChild(h1);
-        wrapper.appendChild(table);
+        info.appendChild(table);
+        info.appendChild(this.statisticHTML());
+        wrapper.appendChild(info);
         wrapper.appendChild(resetBtn);
-        wrapper.appendChild(this.statisticHTML());
 
         conteiner.appendChild(wrapper);
         return conteiner;
