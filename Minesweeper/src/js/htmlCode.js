@@ -1,7 +1,7 @@
 export default class HTMLCode {
     constructor () {
 
-        this.localStorage = false;
+        this.storage = JSON.parse(localStorage.getItem('statistic'));
     }
 
     conteiterHTML() {
@@ -50,8 +50,11 @@ export default class HTMLCode {
         const clickCountText = document.createElement('p');
         clickCountText.className = 'click-count__text';
 
-        if(this.localStorage) {
-            clickCountText.textContent = '20';
+
+
+        console.log(this.storage)
+        if(this.storage) {
+            clickCountText.textContent = `${this.storage.click}`;
         } else {
             clickCountText.textContent = '0';
         }
@@ -70,11 +73,27 @@ export default class HTMLCode {
         const loseWinCountText = document.createElement('p');
         loseWinCountText.className = 'lose-win-count__text';
 
-        if(this.localStorage) {
-            loseWinCountText.textContent = '20 / 10';
+        const lose = document.createElement('span');
+        lose.className = "lose";
+
+        const win = document.createElement('span');
+        win.className = 'win'
+
+        const slash = document.createElement('span');
+        slash.className = 'slash';
+        slash.textContent = '/'
+
+        if(this.storage) {
+            win.textContent = `${this.storage.win}`;
+            lose.textContent = `${this.storage.lose}`;
         } else {
-            loseWinCountText.textContent = '0 / 0';
+            win.textContent = `0`;
+            lose.textContent = `0`;
         }
+
+        loseWinCountText.appendChild(win);
+        loseWinCountText.appendChild(slash);
+        loseWinCountText.appendChild(lose);
 
         loseWinCount.appendChild(loseWinCountTitle);
         loseWinCount.appendChild(loseWinCountText);

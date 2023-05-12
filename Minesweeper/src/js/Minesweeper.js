@@ -5,6 +5,15 @@ export default class Minesweeper {
         this.body = body;
         this.table = false;
         this.firstClick = true;
+        this.storage = {
+            lose: 0,
+            win: 0,
+            click: 0
+        }
+
+        this.loseTxt = false;
+        this.winTxt = false;
+        this.clickTxt = false;
 
         this.htmlCode = new HTMLCode();
 
@@ -19,6 +28,15 @@ export default class Minesweeper {
 
     init() {
         this.printItems();
+        let storage = JSON.parse(localStorage.getItem('statistic'));
+
+        console.log(storage);
+
+        if(storage) {
+            this.storage = storage;
+        } else {
+            localStorage.setItem('statistic', JSON.stringify(this.storage));
+        }
     }
 
     printItems() {
@@ -26,14 +44,18 @@ export default class Minesweeper {
         this.table = document.getElementById('table');
         this.table.addEventListener('click', this.onCellClick)
 
+        this.loseTxt = document.querySelector('.lose')
+        this.winTxt = document.querySelector('.win')
+        this.clickTxt = document.querySelector('.click-count__text')
+
         this.printCells()
     }
 
     printCells() {
-        for (var i=0; i<10; i++) {
+        for (let i = 0; i < 10; i++) {
             let row = this.table.insertRow(i);
 
-            for (var j=0; j<10; j++) {
+            for (let j = 0; j < 10; j++) {
                 let cell = row.insertCell(j);
                 cell.className = 'cell';
 
@@ -61,12 +83,15 @@ export default class Minesweeper {
         let cellTarget = e.target;
 
         this.cellClick(cellTarget);
+        this.storage.click++;
+        this.clickTxt.textContent = this.storage.click;
+        localStorage.setItem('statistic', JSON.stringify(this.storage));
     }
 
     cellClick(cell) {
         if (cell.dataset.mine == 'true') {
             alert(`Game over`);
-            this.stopGame();
+            this.stopGame('lose');
             this.showMines();
 
             return
@@ -120,7 +145,7 @@ export default class Minesweeper {
         if (levelComplete) {
           alert("You Win!");
           this.showMines();
-          this.stopGame();
+          this.stopGame(`win`);
         }
       }
 
@@ -135,8 +160,20 @@ export default class Minesweeper {
         }
     }
 
-    stopGame() {
+    stopGame(way) {
         this.table.removeEventListener('click', this.onCellClick)
+
+        if(way == 'win') {
+            this.storage.win++;
+            this.winTxt.textContent = this.storage.win;
+        }
+
+        if(way == 'lose') {
+            this.storage.lose++;
+            this.loseTxt.textContent = this.storage.lose;
+        }
+
+        localStorage.setItem('statistic', JSON.stringify(this.storage));
     }
 
 }
