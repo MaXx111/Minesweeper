@@ -19,8 +19,13 @@ export default class HTMLCode {
         h1.className = 'container__title';
         h1.textContent = 'Minesweeper';
 
+        const resetBtn = document.createElement('button');
+        resetBtn.className = "reset-btn";
+        resetBtn.textContent = 'reset';
+
         wrapper.appendChild(h1);
         wrapper.appendChild(table);
+        wrapper.appendChild(resetBtn);
         wrapper.appendChild(this.statisticHTML());
 
         conteiner.appendChild(wrapper);

@@ -24,6 +24,7 @@ export default class Minesweeper {
         this.checkLevelCompletion = this.checkLevelCompletion.bind(this);
         this.showMines = this.showMines.bind(this);
         this.stopGame = this.stopGame.bind(this)
+        this.onResetBtn = this.onResetBtn.bind(this);
     }
 
     init() {
@@ -43,12 +44,26 @@ export default class Minesweeper {
         this.body.appendChild(this.htmlCode.conteiterHTML())
         this.table = document.getElementById('table');
         this.table.addEventListener('click', this.onCellClick)
+        this.body.querySelector('.reset-btn').addEventListener('click', this.onResetBtn);
 
         this.loseTxt = document.querySelector('.lose')
         this.winTxt = document.querySelector('.win')
         this.clickTxt = document.querySelector('.click-count__text')
 
         this.printCells()
+    }
+
+    onResetBtn(e) {
+        e.preventDefault();
+        console.log(`reset`);
+
+        this.table.removeEventListener('click', this.onCellClick)
+
+
+        this.table.textContent='';
+        this.firstClick = true;
+        this.printCells();
+        this.table.addEventListener('click', this.onCellClick);
     }
 
     printCells() {
@@ -67,7 +82,7 @@ export default class Minesweeper {
     }
 
     addMines() {
-        for (var i=0; i<20; i++) {
+        for (let i = 0; i < 20; i++) {
             let row = Math.floor(Math.random() * 10);
             let col = Math.floor(Math.random() * 10);
             let cell = this.table.rows[row].cells[col];
@@ -85,6 +100,7 @@ export default class Minesweeper {
         this.cellClick(cellTarget);
         this.storage.click++;
         this.clickTxt.textContent = this.storage.click;
+
         localStorage.setItem('statistic', JSON.stringify(this.storage));
     }
 
