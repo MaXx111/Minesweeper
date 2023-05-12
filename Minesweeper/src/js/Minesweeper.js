@@ -12,7 +12,7 @@ export default class Minesweeper {
         this.addMines = this.addMines.bind(this);
         this.cellClick = this.cellClick.bind(this);
         this.checkLevelCompletion = this.checkLevelCompletion.bind(this);
-        this.revealMines = this.revealMines.bind(this);
+        this.showMines = this.showMines.bind(this);
     }
 
     init() {
@@ -111,15 +111,15 @@ export default class Minesweeper {
         }
         if (levelComplete) {
           alert("You Win!");
-          this.revealMines();
+          this.showMines();
         }
       }
 
-      revealMines() {
+    showMines() {
         for (let i=0; i<10; i++) {
 
           for(let j=0; j<10; j++) {
-              
+
             let cell = this.table.rows[i].cells[j];
             if (cell.getAttribute("data-mine")=="true") cell.className="mine";
           }
