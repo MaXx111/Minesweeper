@@ -7,14 +7,13 @@ export default class Minesweeper {
         this.firstClick = true;
         this.storage = {
             lose: 0,
-            win: 0,
-            click: 0
+            win: 0
         }
 
         this.loseTxt = false;
         this.winTxt = false;
         this.clickTxt = false;
-        
+        this.secTxt = false;
 
         this.htmlCode = new HTMLCode();
 
@@ -50,6 +49,7 @@ export default class Minesweeper {
 
     tick() {
         this.localSec++;
+        this.secTxt.textContent = this.localSec;
     }
 
     printItems() {
@@ -61,15 +61,13 @@ export default class Minesweeper {
         this.loseTxt = document.querySelector('.lose')
         this.winTxt = document.querySelector('.win')
         this.clickTxt = document.querySelector('.click-count__text')
+        this.secTxt = document.querySelector('.sec-count__text');
 
         this.printCells()
     }
 
     clearInterval() {
         clearInterval(this.interval)
-        this.localSec = 0;
-        this.localClick = 0;
-        this.interval = setInterval(this.tick, 1000);
     }
 
     onResetBtn(e) {
@@ -78,6 +76,11 @@ export default class Minesweeper {
 
         this.table.removeEventListener('click', this.onCellClick)
 
+        this.interval = setInterval(this.tick, 1000);
+        this.localSec = 0;
+        this.localClick = 0;
+        this.secTxt.textContent = this.localSec;
+        this.clickTxt.textContent = this.localClick;
 
         this.table.textContent='';
         this.firstClick = true;
@@ -107,6 +110,8 @@ export default class Minesweeper {
             let cell = this.table.rows[row].cells[col];
             cell.setAttribute("data-mine", "true");
         }
+
+        this.showMines();
     }
 
     onCellClick(e) {
@@ -116,9 +121,9 @@ export default class Minesweeper {
         let cellTarget = e.target;
 
         this.cellClick(cellTarget);
-        this.storage.click++;
-        this.clickTxt.textContent = this.storage.click;
+
         this.localClick++;
+        this.clickTxt.textContent = this.localClick;
 
         localStorage.setItem('statistic', JSON.stringify(this.storage));
     }
@@ -226,7 +231,7 @@ export default class Minesweeper {
             this.storage.lose++;
             this.loseTxt.textContent = this.storage.lose;
         }
-
+        this.clearInterval();
         localStorage.setItem('statistic', JSON.stringify(this.storage));
     }
 

@@ -47,8 +47,6 @@ export default class HTMLCode {
         title.className = "statistic__title";
         title.textContent = "Статистика:";
 
-
-
         const clickCount = document.createElement('div');
         clickCount.className = 'click-count';
 
@@ -58,16 +56,8 @@ export default class HTMLCode {
 
         const clickCountText = document.createElement('p');
         clickCountText.className = 'click-count__text';
-
-
-
-        console.log(this.storage)
-        if(this.storage) {
-            clickCountText.textContent = `${this.storage.click}`;
-        } else {
-            clickCountText.textContent = '0';
-        }
-
+        clickCountText.textContent = '0';
+        
         clickCount.appendChild(clickCountTitle);
         clickCount.appendChild(clickCountText);
 
@@ -107,8 +97,23 @@ export default class HTMLCode {
         loseWinCount.appendChild(loseWinCountTitle);
         loseWinCount.appendChild(loseWinCountText);
 
+        const secCount = document.createElement('div');
+        secCount.className = 'sec-count';
+
+        const secCountTitle = document.createElement('h2');
+        secCountTitle.className = 'sec-count__title';
+        secCountTitle.textContent = 'Прошло секунд:';
+
+        const secCountText = document.createElement('p');
+        secCountText.className = 'sec-count__text';
+        secCountText.textContent = '0';
+
+        secCount.appendChild(secCountTitle);
+        secCount.appendChild(secCountText);
+
         wrapper.appendChild(loseWinCount);
         wrapper.appendChild(clickCount);
+        wrapper.appendChild(secCount);
 
         div.appendChild(wrapper);
 
